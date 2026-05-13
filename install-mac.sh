@@ -6,13 +6,13 @@ set -euo pipefail
 #  CudoShare Installer for macOS
 # ═════════════════════════════════════════════════════════════════════════════
 #  Usage:
-#    curl -fsSL https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-mac.sh | bash
+#    curl -fsSL https://raw.githubusercontent.com/AdolfoLoraDev/cudoshare-releases/main/install-mac.sh | bash
 #    bash install-mac.sh
 # ═════════════════════════════════════════════════════════════════════════════
 
 readonly APP_NAME="CudoShare"
-readonly REPO="CudoShare/cudoshare-releases"
-readonly DOWNLOAD_URL="https://github.com/${REPO}/releases/latest/download/CudoShare.dmg"
+readonly REPO="AdolfoLoraDev/cudoshare-releases"
+readonly DOWNLOAD_URL="https://raw.githubusercontent.com/${REPO}/main/latest/CudoShare.dmg"
 readonly INSTALL_DIR="/Applications"
 readonly TEMP_DIR="$(mktemp -d)"
 readonly DMG_PATH="${TEMP_DIR}/CudoShare-macos.dmg"

@@ -6,7 +6,7 @@
     Downloads and installs the latest CudoShare release on Windows 10/11.
     Run as Administrator for best results.
 .EXAMPLE
-    irm https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-windows.ps1 | iex
+    irm https://raw.githubusercontent.com/AdolfoLoraDev/cudoshare-releases/main/install-windows.ps1 | iex
     .\install-windows.ps1
 #>
 
@@ -20,8 +20,8 @@ $ErrorActionPreference = 'Stop'
 # ═════════════════════════════════════════════════════════════════════════════
 
 $AppName      = 'CudoShare'
-$Repo         = 'CudoShare/cudoshare-releases'
-$DownloadUrl  = "https://github.com/$Repo/releases/latest/download/CudoShare.msi"
+$Repo         = 'AdolfoLoraDev/cudoshare-releases'
+$DownloadUrl  = "https://raw.githubusercontent.com/$Repo/main/latest/CudoShare.msi"
 $TempDir      = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "CudoShare-Install-$(Get-Random)")
 $MsiPath      = [System.IO.Path]::Combine($TempDir, 'CudoShare-windows.msi')
 $LogPath      = [System.IO.Path]::Combine($TempDir, 'install.log')

@@ -34,14 +34,10 @@ Unlike cloud-based services that force you to upload files, wait for sync, and p
 |---------|-------------|
 | ⚡ **Instant Sharing** | No upload step. Recipients start downloading immediately. |
 | 🔐 **End-to-End Encryption** | AES-256 encryption. Only you and the recipient can read the files. |
-| 📁 **No Size Limits** | Share anything from a 1 KB text file to a 500 GB video archive. |
+| 📁 **No Size Limits** | Share anything from a 1 KB text file to a Unlimited GB video archive. |
 | 🖥️ **Cross-Platform** | macOS and Windows. Linux coming soon. |
 | 🌍 **No Cloud Required** | Direct device-to-device transfer. Your data stays yours. |
-| 🔗 **Shareable Links** | Generate secure links that anyone can open in their browser. |
-| 📂 **Folder Sharing** | Send entire directories with preserved structure in one click. |
-| 📊 **Transfer Analytics** | See who downloaded what, when, and from where. |
-| 🏷️ **Branded Transfers** | Add your logo and custom message (Tier 2+). |
-| 👥 **Team Workspaces** | Shared folders and team management (Tier 3). |
+| 🔗 **Shareable Links** | Generate secure links that anyone can open in their browser (500mb max). |
 | 🌙 **Dark Mode** | Beautiful native UI that matches your system theme. |
 | 🔔 **Real-Time Notifications** | Desktop alerts when transfers complete or files arrive. |
 
@@ -115,18 +111,13 @@ Choose the plan that fits your workflow. All tiers include **lifetime access** �
 
 | | **Tier 1 — Starter** | **Tier 2 — Pro** | **Tier 3 — Team** |
 |---|---|---|---|
-| **Price** | ~~$49~~ **$39** | ~~$99~~ **$79** | ~~$199~~ **$149** |
+| **Price** |  **$49** | **$79** | **$139** |
 | **Devices** | 2 devices | 5 devices | 10 devices |
 | **Transfers / Month** | Unlimited | Unlimited | Unlimited |
-| **Max File Size** | Unlimited | Unlimited | Unlimited |
+| **Max File Size** | 500mb | 20GB | Unlimited |
 | **End-to-End Encryption** | ✅ | ✅ | ✅ |
 | **Shareable Links** | ✅ | ✅ | ✅ |
-| **Transfer History** | 7 days | 90 days | Unlimited |
-| **Branded Transfers** | ❌ | ✅ | ✅ |
-| **Custom Domain Links** | ❌ | ✅ | ✅ |
-| **Team Workspaces** | ❌ | ❌ | ✅ |
-| **User Management** | ❌ | ❌ | ✅ |
-| **Priority Support** | ❌ | Email | Email + Chat |
+| **Priority Support** | Email | Email | Email |
 | **Best For** | Personal use | Freelancers & pros | Agencies & teams |
 
 > 🛒 **[Get CudoShare on AppSumo](https://appsumo.com)** — Limited-time launch pricing. Stack codes to unlock higher tiers.
@@ -162,10 +153,10 @@ Choose the plan that fits your workflow. All tiers include **lifetime access** �
 > **A:** No. CudoShare uses peer-to-peer and relay technologies to transfer files directly between devices. In rare cases where both devices are behind strict NATs, an encrypted relay may be used, but files are never persisted to disk.
 
 **Q: Is there really no file size limit?**
-> **A:** Correct. The only limit is your available disk space and bandwidth. Send a 10 GB video or a 1 TB backup — CudoShare handles it.
+> **A:** Correct IN TIER 3. The only limit is your available disk space and bandwidth. Send a 10 GB video or a 1 TB backup — CudoShare handles it. 
 
 **Q: Do recipients need to install CudoShare?**
-> **A:** Not necessarily. You can generate a secure web link that anyone can open in any modern browser to download your files.
+> **A:** Not necessarily. You can generate a secure web link that anyone can open in any modern browser to download your files until 500mb max.
 
 ### Licensing & Payment
 
@@ -173,21 +164,20 @@ Choose the plan that fits your workflow. All tiers include **lifetime access** �
 > **A:** Yes. Pay once, own it forever. No recurring fees, no surprise charges. Future updates within your major version are included.
 
 **Q: Can I upgrade my tier later?**
-> **A:** Absolutely. You can stack AppSumo codes to unlock higher tiers, or upgrade directly from within the app.
+> **A:** Absolutely. You can take AppSumo codes to unlock higher tier.
 
 **Q: What happens if I change computers?**
-> **A:** Deactivate the old device from your account dashboard and activate the new one. Your license travels with you.
-
+> **A:** 1 license 1 computer. If you change the computer, you will buy another license.
 ### Technical
 
 **Q: Does it work offline?**
-> **A:** For direct device-to-device transfers on the same local network, yes — no internet required. For remote sharing, an internet connection is needed to establish the secure connection.
+> **A:** an internet connection is needed to establish the secure connection.
 
 **Q: Is my data encrypted?**
 > **A:** Every transfer uses AES-256-GCM encryption with ephemeral keys. Not even our team can decrypt your files.
 
 **Q: Can I use this for my business?**
-> **A:** Yes. Tier 2 and Tier 3 licenses include commercial use rights. Tier 3 adds team management and workspaces.
+> **A:** Yes.
 
 ---
 
@@ -198,25 +188,6 @@ Choose the plan that fits your workflow. All tiers include **lifetime access** �
 | 🏠 **Official Website** | [https://cudoshare.com](https://cudoshare.com) |
 | 🐙 **GitHub Repository** | [https://github.com/CudoShare/cudoshare-releases](https://github.com/CudoShare/cudoshare-releases) |
 | 🛒 **AppSumo Deal** | [https://appsumo.com/products/cudoshare](https://appsumo.com) |
-| 📖 **Documentation** | [https://docs.cudoshare.com](https://docs.cudoshare.com) |
-| 🎫 **Support Portal** | [https://support.cudoshare.com](https://support.cudoshare.com) |
-| ✉️ **Email Support** | [support@cudoshare.com](mailto:support@cudoshare.com) |
-| 🐦 **Twitter / X** | [@CudoShare](https://twitter.com/CudoShare) |
-| 💬 **Community Discord** | [Join our server](https://discord.gg/cudoshare) |
-
----
-
-## ⭐ Loved by Early Adopters
-
-> *"I used to pay $20/month for a file-sharing tool. CudoShare replaced it completely and paid for itself in 2 months."*
-> — **Marcus T.** , Video Producer
-
-> *"Sending 30 GB RAW photo folders to clients used to be a nightmare. Now it takes 30 seconds to start the transfer."*
-> — **Elena R.** , Wedding Photographer
-
-> *"The team workspace feature is exactly what our agency needed. No more WeTransfer links expiring on clients."*
-> — **James K.** , Creative Director
-
 ---
 
 <div align="center">
@@ -272,11 +243,7 @@ A diferencia de los servicios basados en la nube que te obligan a subir archivos
 | 📁 **Sin Límites de Tamaño** | Comparte desde un archivo de texto de 1 KB hasta un archivo de vídeo de 500 GB. |
 | 🖥️ **Multiplataforma** | macOS y Windows. Linux próximamente. |
 | 🌍 **Sin Nube Necesaria** | Transferencia directa de dispositivo a dispositivo. Tus datos son tuyos. |
-| 🔗 **Enlaces Compartibles** | Genera enlaces seguros que cualquiera puede abrir en su navegador. |
-| 📂 **Compartir Carpetas** | Envía directorios completos con estructura preservada en un clic. |
-| 📊 **Analíticas de Transferencia** | Ve quién descargó qué, cuándo y desde dónde. |
-| 🏷️ **Transferencias con Marca** | Añade tu logo y mensaje personalizado (Tier 2+). |
-| 👥 **Espacios de Trabajo en Equipo** | Carpetas compartidas y gestión de equipo (Tier 3). |
+| 🔗 **Enlaces Compartibles** | Genera enlaces seguros que cualquiera puede abrir en su navegador. (Máximo 500mb) |
 | 🌙 **Modo Oscuro** | Interfaz nativa hermosa que se adapta al tema de tu sistema. |
 | 🔔 **Notificaciones en Tiempo Real** | Alertas de escritorio cuando las transferencias se completan o llegan archivos. |
 
@@ -350,18 +317,12 @@ Elige el plan que se adapte a tu flujo de trabajo. Todos los tiers incluyen **ac
 
 | | **Tier 1 — Starter** | **Tier 2 — Pro** | **Tier 3 — Team** |
 |---|---|---|---|
-| **Precio** | ~~$49~~ **$39** | ~~$99~~ **$79** | ~~$199~~ **$149** |
+| **Precio** | **$49** | **$79** | **$139** |
 | **Dispositivos** | 2 dispositivos | 5 dispositivos | 10 dispositivos |
-| **Transferencias / Mes** | Ilimitadas | Ilimitadas | Ilimitadas |
-| **Tamaño Máximo** | Ilimitado | Ilimitado | Ilimitado |
+| **Tamaño Máximo** | 500 mb | 20gb | Ilimitado |
 | **Cifrado de Extremo a Extremo** | ✅ | ✅ | ✅ |
 | **Enlaces Compartibles** | ✅ | ✅ | ✅ |
-| **Historial de Transferencias** | 7 días | 90 días | Ilimitado |
-| **Transferencias con Marca** | ❌ | ✅ | ✅ |
-| **Enlaces con Dominio Personalizado** | ❌ | ✅ | ✅ |
-| **Espacios de Trabajo en Equipo** | ❌ | ❌ | ✅ |
-| **Gestión de Usuarios** | ❌ | ❌ | ✅ |
-| **Soporte Prioritario** | ❌ | Email | Email + Chat |
+| **Soporte Prioritario** | Email | Email | Email |
 | **Ideal Para** | Uso personal | Freelancers y profesionales | Agencias y equipos |
 
 > 🛒 **[Consigue CudoShare en AppSumo](https://appsumo.com)** — Precio de lanzamiento por tiempo limitado. Acumula códigos para desbloquear tiers superiores.
@@ -397,10 +358,10 @@ Elige el plan que se adapte a tu flujo de trabajo. Todos los tiers incluyen **ac
 > **R:** No. CudoShare utiliza tecnologías peer-to-peer y relay para transferir archivos directamente entre dispositivos. En casos raros donde ambos dispositivos están detrás de NATs estrictos, puede usarse un relay cifrado, pero los archivos nunca se persisten en disco.
 
 **P: ¿Realmente no hay límite de tamaño de archivo?**
-> **R:** Correcto. El único límite es tu espacio en disco disponible y tu ancho de banda. Envía un vídeo de 10 GB o una copia de seguridad de 1 TB — CudoShare lo gestiona.
+> **R:** Correcto en Tier 3. El único límite es tu espacio en disco disponible y tu ancho de banda. Envía un vídeo de 10 GB o una copia de seguridad de 1 TB — CudoShare lo gestiona.
 
 **P: ¿Los destinatarios necesitan instalar CudoShare?**
-> **R:** No necesariamente. Puedes generar un enlace web seguro que cualquiera puede abrir en cualquier navegador moderno para descargar tus archivos.
+> **R:** No necesariamente. Puedes generar un enlace web seguro que cualquiera puede abrir en cualquier navegador moderno para descargar tus archivos. Con un máximo de 500mb.
 
 ### Licencias y Pago
 
@@ -408,21 +369,21 @@ Elige el plan que se adapte a tu flujo de trabajo. Todos los tiers incluyen **ac
 > **R:** Sí. Paga una vez, es tuyo para siempre. Sin tarifas recurrentes, sin cargos sorpresa. Las futuras actualizaciones dentro de tu versión principal están incluidas.
 
 **P: ¿Puedo actualizar mi tier más tarde?**
-> **R:** Por supuesto. Puedes acumular códigos de AppSumo para desbloquear tiers superiores, o actualizar directamente desde la aplicación.
+> **R:** Por supuesto. Puedes comprar nuevas licencias de AppSumo para desbloquear tiers superiores.
 
 **P: ¿Qué pasa si cambio de ordenador?**
-> **R:** Desactiva el dispositivo antiguo desde tu panel de cuenta y activa el nuevo. Tu licencia viaja contigo.
+> **R:** Una licencia un ordenador. Si cambias de ordenador, necesitarás una nueva licencia.
 
 ### Técnico
 
 **P: ¿Funciona sin conexión?**
-> **R:** Para transferencias directas de dispositivo a dispositivo en la misma red local, sí — no se necesita Internet. Para compartir remotamente, se necesita una conexión a Internet para establecer la conexión segura.
+> **R:** se necesita una conexión a Internet para establecer la conexión segura.
 
 **P: ¿Mis datos están cifrados?**
 > **R:** Cada transferencia utiliza cifrado AES-256-GCM con claves efímeras. Ni siquiera nuestro equipo puede descifrar tus archivos.
 
 **P: ¿Puedo usarlo para mi negocio?**
-> **R:** Sí. Las licencias Tier 2 y Tier 3 incluyen derechos de uso comercial. El Tier 3 añade gestión de equipo y espacios de trabajo.
+> **R:** Sí.
 
 ---
 
@@ -438,19 +399,6 @@ Elige el plan que se adapte a tu flujo de trabajo. Todos los tiers incluyen **ac
 | ✉️ **Email de Soporte** | [support@cudoshare.com](mailto:support@cudoshare.com) |
 | 🐦 **Twitter / X** | [@CudoShare](https://twitter.com/CudoShare) |
 | 💬 **Discord Comunitario** | [Únete a nuestro servidor](https://discord.gg/cudoshare) |
-
----
-
-## ⭐ Amado por los Primeros Usuarios
-
-> *"Solía pagar $20/mes por una herramienta de intercambio de archivos. CudoShare la reemplazó por completo y se pagó solo en 2 meses."*
-> — **Marcus T.** , Productor de Vídeo
-
-> *"Enviar carpetas de fotos RAW de 30 GB a clientes solía ser una pesadilla. Ahora tarda 30 segundos en iniciar la transferencia."*
-> — **Elena R.** , Fotógrafa de Bodas
-
-> *"La función de espacio de trabajo en equipo es exactamente lo que nuestra agencia necesitaba. No más enlaces de WeTransfer expirando en los clientes."*
-> — **James K.** , Director Creativo
 
 ---
 
