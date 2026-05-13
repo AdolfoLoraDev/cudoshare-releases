@@ -12,7 +12,7 @@ set -euo pipefail
 
 readonly APP_NAME="CudoShare"
 readonly REPO="CudoShare/cudoshare-releases"
-readonly DOWNLOAD_URL="https://github.com/${REPO}/releases/latest/download/CudoShare-macos.dmg"
+readonly DOWNLOAD_URL="https://github.com/${REPO}/releases/latest/download/CudoShare.dmg"
 readonly INSTALL_DIR="/Applications"
 readonly TEMP_DIR="$(mktemp -d)"
 readonly DMG_PATH="${TEMP_DIR}/CudoShare-macos.dmg"

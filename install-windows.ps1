@@ -21,7 +21,7 @@ $ErrorActionPreference = 'Stop'
 
 $AppName      = 'CudoShare'
 $Repo         = 'CudoShare/cudoshare-releases'
-$DownloadUrl  = "https://github.com/$Repo/releases/latest/download/CudoShare-windows.msi"
+$DownloadUrl  = "https://github.com/$Repo/releases/latest/download/CudoShare.msi"
 $TempDir      = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "CudoShare-Install-$(Get-Random)")
 $MsiPath      = [System.IO.Path]::Combine($TempDir, 'CudoShare-windows.msi')
 $LogPath      = [System.IO.Path]::Combine($TempDir, 'install.log')
