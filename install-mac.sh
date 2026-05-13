@@ -24,7 +24,6 @@ DIM=$(tput dim 2>/dev/null || echo '')
 RESET=$(tput sgr0 2>/dev/null || echo '')
 
 # Colors
-BLACK=$(tput setaf 0 2>/dev/null || echo '')
 RED=$(tput setaf 1 2>/dev/null || echo '')
 GREEN=$(tput setaf 2 2>/dev/null || echo '')
 YELLOW=$(tput setaf 3 2>/dev/null || echo '')
@@ -33,48 +32,39 @@ MAGENTA=$(tput setaf 5 2>/dev/null || echo '')
 CYAN=$(tput setaf 6 2>/dev/null || echo '')
 WHITE=$(tput setaf 7 2>/dev/null || echo '')
 
-# Brighter colors
 BRIGHT_GREEN=$(tput setaf 10 2>/dev/null || echo "$GREEN")
 BRIGHT_CYAN=$(tput setaf 14 2>/dev/null || echo "$CYAN")
 BRIGHT_YELLOW=$(tput setaf 11 2>/dev/null || echo "$YELLOW")
 BRIGHT_MAGENTA=$(tput setaf 13 2>/dev/null || echo "$MAGENTA")
+BRIGHT_WHITE=$(tput setaf 15 2>/dev/null || echo "$WHITE")
 
-# ─── Unicode Box Drawing ────────────────────────────────────────────────────
+# ─── Unicode ────────────────────────────────────────────────────────────────
 HORIZ='─'
 VERT='│'
 TL='╭'
 TR='╮'
 BL='╰'
-BR='╯'
-LEFT_ARROW='▸'
+BR_='╯'
+ARROW='▸'
 CHECK='✓'
 CROSS='✗'
 BULLET='•'
-SPARKLE='✦'
-ROCKET='🚀'
-LOCK='🔒'
-STAR='⭐'
-FOLDER='📁'
-GEAR='⚙️'
-PARTY='🎉'
 
 # ─── Helpers ────────────────────────────────────────────────────────────────
 
 print_banner() {
     clear 2>/dev/null || true
-    echo ""
-    echo "  ${CYAN}${BOLD}   ╭────────────────────────────────────────╮${RESET}"
-    echo "  ${CYAN}${BOLD}   │                                        │${RESET}"
-    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}╭━━━╮${RESET} ${BOLD}╭━╮╭━╮╭━━━╮╭━━━╮${RESET}           ${CYAN}${BOLD}│${RESET}"
-    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}┃╭━╮┃${RESET} ${BOLD}┃ ┃┃ ┃┃╭━╮┃┃╭━╮┃${RESET}           ${CYAN}${BOLD}│${RESET}"
-    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}┃┃ ╰╯${RESET} ${BOLD}┃ ┃┃ ┃┃┃ ┃┃┃╰━╯┃${RESET}           ${CYAN}${BOLD}│${RESET}"
-    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}┃┃ ${RESET}    ${BOLD}┃ ┃┃ ┃┃┃ ┃┃┃╭╮╭╯${RESET}           ${CYAN}${BOLD}│${RESET}"
-    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}┃╰━╮┃${RESET} ${BOLD}┃ ┗┛ ┃┃╰━╯┃┃┃┃╰╮${RESET}           ${CYAN}${BOLD}│${RESET}"
-    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}╰━━━╯${RESET} ${BOLD}╰━━━━╯╰━━━╯╰╯╰━╯${RESET}           ${CYAN}${BOLD}│${RESET}"
-    echo "  ${CYAN}${BOLD}   │                                        │${RESET}"
-    echo "  ${CYAN}${BOLD}   │${RESET}    ${DIM}Lightning-fast file sharing${RESET}        ${CYAN}${BOLD}│${RESET}"
-    echo "  ${CYAN}${BOLD}   │                                        │${RESET}"
-    echo "  ${CYAN}${BOLD}   ╰────────────────────────────────────────╯${RESET}"
+    cat <<'EOF'
+
+EOF
+    echo "  ${CYAN}${BOLD}   ${TL}──────────────────────────────────────────${TR}${RESET}"
+    echo "  ${CYAN}${BOLD}   ${VERT}                                          ${VERT}${RESET}"
+    echo "  ${CYAN}${BOLD}   ${VERT}${RESET}     ${BOLD}${BRIGHT_WHITE}  ⚡  C U D O S H A R E${RESET}              ${CYAN}${BOLD}${VERT}${RESET}"
+    echo "  ${CYAN}${BOLD}   ${VERT}                                          ${VERT}${RESET}"
+    echo "  ${CYAN}${BOLD}   ${VERT}${RESET}       ${DIM}Lightning-fast file sharing${RESET}      ${CYAN}${BOLD}${VERT}${RESET}"
+    echo "  ${CYAN}${BOLD}   ${VERT}${RESET}          ${DIM}Direct · Secure · Private${RESET}       ${CYAN}${BOLD}${VERT}${RESET}"
+    echo "  ${CYAN}${BOLD}   ${VERT}                                          ${VERT}${RESET}"
+    echo "  ${CYAN}${BOLD}   ${BL}──────────────────────────────────────────${BR_}${RESET}"
     echo ""
 }
 
@@ -89,7 +79,7 @@ draw_box_bottom() {
     local width=$1
     printf "  ${CYAN}${BOLD}${BL}"
     for ((i=0; i<width; i++)); do printf "%s" "$HORIZ"; done
-    printf "${BR}${RESET}\n"
+    printf "${BR_}${RESET}\n"
 }
 
 draw_box_line() {
@@ -140,7 +130,7 @@ trap cleanup EXIT
 
 print_step() {
     echo ""
-    echo "  ${BRIGHT_CYAN}${BOLD}${LEFT_ARROW}${RESET} ${BOLD}$1${RESET}"
+    echo "  ${BRIGHT_CYAN}${BOLD}${ARROW}${RESET} ${BOLD}$1${RESET}"
 }
 
 print_success() {
@@ -198,16 +188,11 @@ print_step "Downloading CudoShare"
 
 mkdir -p "${MOUNT_POINT}"
 
-# Download with progress
 TOTAL_SIZE=$(curl -fsSLI "$DOWNLOAD_URL" 2>/dev/null | grep -i content-length | awk '{print $2}' | tr -d '\r' || echo "0")
 
 if [[ "$TOTAL_SIZE" =~ ^[0-9]+$ ]] && [[ "$TOTAL_SIZE" -gt 0 ]]; then
-    # Known size → progress bar
-    (
-        curl -fsSL "$DOWNLOAD_URL" -o "${DMG_PATH}" 2>/dev/null
-    ) &
+    curl -fsSL "$DOWNLOAD_URL" -o "${DMG_PATH}" 2>/dev/null &
     CURL_PID=$!
-    
     while kill -0 "$CURL_PID" 2>/dev/null; do
         if [[ -f "${DMG_PATH}" ]]; then
             CURRENT_SIZE=$(stat -f%z "${DMG_PATH}" 2>/dev/null || echo 0)
@@ -220,10 +205,7 @@ if [[ "$TOTAL_SIZE" =~ ^[0-9]+$ ]] && [[ "$TOTAL_SIZE" -gt 0 ]]; then
     wait "$CURL_PID"
     printf "\r%-60s\r" " "
 else
-    # Unknown size → spinner
-    (
-        curl -fsSL "$DOWNLOAD_URL" -o "${DMG_PATH}" 2>/dev/null
-    ) &
+    curl -fsSL "$DOWNLOAD_URL" -o "${DMG_PATH}" 2>/dev/null &
     CURL_PID=$!
     spinner "$CURL_PID" "Downloading CudoShare-macos.dmg..."
     wait "$CURL_PID"
@@ -240,9 +222,7 @@ print_success "Downloaded ${FILE_SIZE}"
 # ─── Step 4: Mount & Install ────────────────────────────────────────────────
 print_step "Mounting disk image"
 
-(
-    hdiutil attach "${DMG_PATH}" -nobrowse -quiet -mountpoint "${MOUNT_POINT}" >/dev/null 2>&1
-) &
+hdiutil attach "${DMG_PATH}" -nobrowse -quiet -mountpoint "${MOUNT_POINT}" >/dev/null 2>&1 &
 SPIN_PID=$!
 spinner "$SPIN_PID" "Attaching DMG..."
 wait "$SPIN_PID"
@@ -269,19 +249,14 @@ if [[ -d "${DEST_PATH}" ]]; then
 fi
 
 print_step "Installing to Applications"
-(
-    cp -a "${APP_BUNDLE}" "${DEST_PATH}"
-) &
+cp -a "${APP_BUNDLE}" "${DEST_PATH}" &
 SPIN_PID=$!
 spinner "$SPIN_PID" "Copying files..."
 wait "$SPIN_PID"
 
 touch "${DEST_PATH}"
 
-# Detach
-(
-    hdiutil detach "${MOUNT_POINT}" -quiet >/dev/null 2>&1
-) &
+hdiutil detach "${MOUNT_POINT}" -quiet >/dev/null 2>&1 &
 SPIN_PID=$!
 spinner "$SPIN_PID" "Cleaning up..."
 wait "$SPIN_PID"
@@ -291,7 +266,7 @@ print_success "Installation complete"
 # ─── Step 5: Verification ───────────────────────────────────────────────────
 if command -v codesign &>/dev/null; then
     if codesign -vv "${DEST_PATH}" &>/dev/null; then
-        print_success "Code signature verified ${LOCK}"
+        print_success "Code signature verified"
     else
         print_warn "First launch: approve in System Settings → Privacy & Security"
     fi
@@ -302,10 +277,10 @@ echo ""
 draw_box_top 50
 draw_box_line "  ${BOLD}${BRIGHT_GREEN}Installation Complete!${RESET}                            " 50
 draw_box_line "                                                   " 50
-draw_box_line "  ${STAR}  CudoShare is ready to use                " 50
-draw_box_line "  ${FOLDER}  Location: ${DIM}/Applications/CudoShare.app${RESET}       " 50
-draw_box_line "  ${ROCKET}  Launch:   ${DIM}open -a CudoShare${RESET}                   " 50
+draw_box_line "  ${BOLD}⭐${RESET}  CudoShare is ready to use                " 50
+draw_box_line "  ${BOLD}📁${RESET}  Location: ${DIM}/Applications/CudoShare.app${RESET}       " 50
+draw_box_line "  ${BOLD}🚀${RESET}  Launch:   ${DIM}open -a CudoShare${RESET}                   " 50
 draw_box_line "                                                   " 50
-draw_box_line "  ${PARTY}  Welcome aboard — Share without limits  " 50
+draw_box_line "  ${BOLD}🎉${RESET}  Welcome aboard — Share without limits  " 50
 draw_box_bottom 50
 echo ""
