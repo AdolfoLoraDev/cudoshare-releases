@@ -2,13 +2,13 @@
 
 set -euo pipefail
 
-# ============================================================================
-# CudoShare Installer for macOS
-# ============================================================================
-# Usage:
-#   curl -fsSL https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-mac.sh | bash
-#   bash install-mac.sh
-# ============================================================================
+# ═════════════════════════════════════════════════════════════════════════════
+#  CudoShare Installer for macOS
+# ═════════════════════════════════════════════════════════════════════════════
+#  Usage:
+#    curl -fsSL https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-mac.sh | bash
+#    bash install-mac.sh
+# ═════════════════════════════════════════════════════════════════════════════
 
 readonly APP_NAME="CudoShare"
 readonly REPO="CudoShare/cudoshare-releases"
@@ -18,31 +18,113 @@ readonly TEMP_DIR="$(mktemp -d)"
 readonly DMG_PATH="${TEMP_DIR}/CudoShare-macos.dmg"
 readonly MOUNT_POINT="${TEMP_DIR}/mount"
 
+# ─── ANSI Styles ────────────────────────────────────────────────────────────
+BOLD=$(tput bold 2>/dev/null || echo '')
+DIM=$(tput dim 2>/dev/null || echo '')
+RESET=$(tput sgr0 2>/dev/null || echo '')
+
 # Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+BLACK=$(tput setaf 0 2>/dev/null || echo '')
+RED=$(tput setaf 1 2>/dev/null || echo '')
+GREEN=$(tput setaf 2 2>/dev/null || echo '')
+YELLOW=$(tput setaf 3 2>/dev/null || echo '')
+BLUE=$(tput setaf 4 2>/dev/null || echo '')
+MAGENTA=$(tput setaf 5 2>/dev/null || echo '')
+CYAN=$(tput setaf 6 2>/dev/null || echo '')
+WHITE=$(tput setaf 7 2>/dev/null || echo '')
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
+# Brighter colors
+BRIGHT_GREEN=$(tput setaf 10 2>/dev/null || echo "$GREEN")
+BRIGHT_CYAN=$(tput setaf 14 2>/dev/null || echo "$CYAN")
+BRIGHT_YELLOW=$(tput setaf 11 2>/dev/null || echo "$YELLOW")
+BRIGHT_MAGENTA=$(tput setaf 13 2>/dev/null || echo "$MAGENTA")
 
-log_info() {
-    echo -e "${BLUE}[INFO]${NC} $1"
+# ─── Unicode Box Drawing ────────────────────────────────────────────────────
+HORIZ='─'
+VERT='│'
+TL='╭'
+TR='╮'
+BL='╰'
+BR='╯'
+LEFT_ARROW='▸'
+CHECK='✓'
+CROSS='✗'
+BULLET='•'
+SPARKLE='✦'
+ROCKET='🚀'
+LOCK='🔒'
+STAR='⭐'
+FOLDER='📁'
+GEAR='⚙️'
+PARTY='🎉'
+
+# ─── Helpers ────────────────────────────────────────────────────────────────
+
+print_banner() {
+    clear 2>/dev/null || true
+    echo ""
+    echo "  ${CYAN}${BOLD}   ╭────────────────────────────────────────╮${RESET}"
+    echo "  ${CYAN}${BOLD}   │                                        │${RESET}"
+    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}╭━━━╮${RESET} ${BOLD}╭━╮╭━╮╭━━━╮╭━━━╮${RESET}           ${CYAN}${BOLD}│${RESET}"
+    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}┃╭━╮┃${RESET} ${BOLD}┃ ┃┃ ┃┃╭━╮┃┃╭━╮┃${RESET}           ${CYAN}${BOLD}│${RESET}"
+    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}┃┃ ╰╯${RESET} ${BOLD}┃ ┃┃ ┃┃┃ ┃┃┃╰━╯┃${RESET}           ${CYAN}${BOLD}│${RESET}"
+    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}┃┃ ${RESET}    ${BOLD}┃ ┃┃ ┃┃┃ ┃┃┃╭╮╭╯${RESET}           ${CYAN}${BOLD}│${RESET}"
+    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}┃╰━╮┃${RESET} ${BOLD}┃ ┗┛ ┃┃╰━╯┃┃┃┃╰╮${RESET}           ${CYAN}${BOLD}│${RESET}"
+    echo "  ${CYAN}${BOLD}   │${RESET}   ${BRIGHT_CYAN}${BOLD}╰━━━╯${RESET} ${BOLD}╰━━━━╯╰━━━╯╰╯╰━╯${RESET}           ${CYAN}${BOLD}│${RESET}"
+    echo "  ${CYAN}${BOLD}   │                                        │${RESET}"
+    echo "  ${CYAN}${BOLD}   │${RESET}    ${DIM}Lightning-fast file sharing${RESET}        ${CYAN}${BOLD}│${RESET}"
+    echo "  ${CYAN}${BOLD}   │                                        │${RESET}"
+    echo "  ${CYAN}${BOLD}   ╰────────────────────────────────────────╯${RESET}"
+    echo ""
 }
 
-log_success() {
-    echo -e "${GREEN}[OK]${NC} $1"
+draw_box_top() {
+    local width=$1
+    printf "  ${CYAN}${BOLD}${TL}"
+    for ((i=0; i<width; i++)); do printf "%s" "$HORIZ"; done
+    printf "${TR}${RESET}\n"
 }
 
-log_warn() {
-    echo -e "${YELLOW}[WARN]${NC} $1"
+draw_box_bottom() {
+    local width=$1
+    printf "  ${CYAN}${BOLD}${BL}"
+    for ((i=0; i<width; i++)); do printf "%s" "$HORIZ"; done
+    printf "${BR}${RESET}\n"
 }
 
-log_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+draw_box_line() {
+    local text="$1"
+    local width=$2
+    local padding=$((width - ${#text}))
+    printf "  ${CYAN}${BOLD}${VERT}${RESET} ${text}"
+    for ((i=0; i<padding-1; i++)); do printf " "; done
+    printf "${CYAN}${BOLD}${VERT}${RESET}\n"
+}
+
+spinner() {
+    local pid=$1
+    local message="$2"
+    local spin_chars=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+    local i=0
+    while kill -0 "$pid" 2>/dev/null; do
+        i=$(( (i + 1) % 10 ))
+        printf "\r  ${CYAN}${BOLD}%s${RESET} ${DIM}%s${RESET}  " "${spin_chars[$i]}" "$message"
+        sleep 0.08
+    done
+    printf "\r%-60s\r" " "
+}
+
+progress_bar() {
+    local current=$1
+    local total=$2
+    local width=40
+    local percent=$((current * 100 / total))
+    local filled=$((current * width / total))
+    local empty=$((width - filled))
+    printf "\r  ${DIM}[${RESET}"
+    for ((i=0; i<filled; i++)); do printf "${BRIGHT_CYAN}█${RESET}"; done
+    for ((i=0; i<empty; i++)); do printf "${DIM}░${RESET}"; done
+    printf "${DIM}]${RESET} ${BOLD}%3d%%${RESET}" "$percent"
 }
 
 cleanup() {
@@ -56,84 +138,114 @@ cleanup() {
 
 trap cleanup EXIT
 
-# ---------------------------------------------------------------------------
-# Preflight checks
-# ---------------------------------------------------------------------------
+print_step() {
+    echo ""
+    echo "  ${BRIGHT_CYAN}${BOLD}${LEFT_ARROW}${RESET} ${BOLD}$1${RESET}"
+}
 
-echo ""
-echo "=========================================="
-echo "     CudoShare Installer for macOS"
-echo "=========================================="
-echo ""
+print_success() {
+    echo "  ${BRIGHT_GREEN}${BOLD}${CHECK}${RESET} $1"
+}
 
-log_info "Checking system requirements..."
+print_warn() {
+    echo "  ${BRIGHT_YELLOW}${BOLD}!${RESET} $1"
+}
 
-# macOS version check (14.0+)
+print_error() {
+    echo "  ${RED}${BOLD}${CROSS}${RESET} $1"
+}
+
+# ─── Main ───────────────────────────────────────────────────────────────────
+
+print_banner
+
+# ─── Step 1: System Check ───────────────────────────────────────────────────
+print_step "Checking your system"
+
+SYS_MSG=""
 OS_MAJOR=$(sw_vers -productVersion | cut -d. -f1)
-OS_MINOR=$(sw_vers -productVersion | cut -d. -f2)
-if [[ "${OS_MAJOR}" -lt 14 ]]; then
-    log_error "CudoShare requires macOS 14.0 (Sonoma) or later."
-    log_error "Your version: $(sw_vers -productVersion)"
-    exit 1
-fi
-
-# Architecture check
 ARCH=$(uname -m)
-if [[ "${ARCH}" != "arm64" && "${ARCH}" != "x86_64" ]]; then
-    log_error "Unsupported architecture: ${ARCH}"
-    log_error "CudoShare supports Apple Silicon (M1/M2/M3/M4) and Intel 64-bit Macs."
+
+if [[ "${OS_MAJOR}" -lt 14 ]]; then
+    print_error "macOS 14.0+ required. You have $(sw_vers -productVersion)"
     exit 1
 fi
 
-log_success "macOS $(sw_vers -productVersion) on ${ARCH} — supported."
-
-# Check if CudoShare is already running
-if pgrep -xq "CudoShare"; then
-    log_warn "CudoShare is currently running."
-    log_warn "Please quit CudoShare before installing to avoid conflicts."
-    read -r -p "Press [Enter] to continue anyway, or Ctrl+C to cancel..."
-fi
-
-# Check write permissions
-if [[ ! -w "${INSTALL_DIR}" ]]; then
-    log_error "You do not have write permission to ${INSTALL_DIR}."
-    log_error "Please run this script with a user that can write to Applications, or use:"
-    echo "  sudo bash install-mac.sh"
+if [[ "${ARCH}" == "arm64" ]]; then
+    SYS_MSG="Apple Silicon · macOS $(sw_vers -productVersion)"
+elif [[ "${ARCH}" == "x86_64" ]]; then
+    SYS_MSG="Intel 64-bit · macOS $(sw_vers -productVersion)"
+else
+    print_error "Unsupported architecture: ${ARCH}"
     exit 1
 fi
 
-# ---------------------------------------------------------------------------
-# Download
-# ---------------------------------------------------------------------------
+print_success "${SYS_MSG}"
 
-log_info "Downloading latest CudoShare for macOS..."
-log_info "URL: ${DOWNLOAD_URL}"
-
-if ! command -v curl &>/dev/null; then
-    log_error "curl is required but not installed."
-    exit 1
+# ─── Step 2: Close running app ──────────────────────────────────────────────
+if pgrep -xq "CudoShare" 2>/dev/null; then
+    print_warn "CudoShare is running. Please quit it first."
+    echo ""
+    draw_box_top 48
+    draw_box_line "  ${YELLOW}Press Return to continue anyway${RESET}" 48
+    draw_box_bottom 48
+    echo ""
+    read -r
 fi
+
+# ─── Step 3: Download ───────────────────────────────────────────────────────
+print_step "Downloading CudoShare"
 
 mkdir -p "${MOUNT_POINT}"
 
-HTTP_CODE=$(curl -fsSL -w "%{http_code}" -o "${DMG_PATH}" "${DOWNLOAD_URL}")
-if [[ "${HTTP_CODE}" != "200" ]]; then
-    log_error "Download failed (HTTP ${HTTP_CODE})."
-    log_error "Please check your internet connection or try downloading manually from:"
-    echo "  https://github.com/${REPO}/releases/latest"
+# Download with progress
+TOTAL_SIZE=$(curl -fsSLI "$DOWNLOAD_URL" 2>/dev/null | grep -i content-length | awk '{print $2}' | tr -d '\r' || echo "0")
+
+if [[ "$TOTAL_SIZE" =~ ^[0-9]+$ ]] && [[ "$TOTAL_SIZE" -gt 0 ]]; then
+    # Known size → progress bar
+    (
+        curl -fsSL "$DOWNLOAD_URL" -o "${DMG_PATH}" 2>/dev/null
+    ) &
+    CURL_PID=$!
+    
+    while kill -0 "$CURL_PID" 2>/dev/null; do
+        if [[ -f "${DMG_PATH}" ]]; then
+            CURRENT_SIZE=$(stat -f%z "${DMG_PATH}" 2>/dev/null || echo 0)
+            if [[ "$CURRENT_SIZE" -gt 0 ]]; then
+                progress_bar "$CURRENT_SIZE" "$TOTAL_SIZE"
+            fi
+        fi
+        sleep 0.2
+    done
+    wait "$CURL_PID"
+    printf "\r%-60s\r" " "
+else
+    # Unknown size → spinner
+    (
+        curl -fsSL "$DOWNLOAD_URL" -o "${DMG_PATH}" 2>/dev/null
+    ) &
+    CURL_PID=$!
+    spinner "$CURL_PID" "Downloading CudoShare-macos.dmg..."
+    wait "$CURL_PID"
+fi
+
+if [[ ! -f "${DMG_PATH}" ]] || [[ ! -s "${DMG_PATH}" ]]; then
+    print_error "Download failed. Check your internet connection."
     exit 1
 fi
 
 FILE_SIZE=$(du -h "${DMG_PATH}" | cut -f1)
-log_success "Downloaded ${FILE_SIZE} to ${DMG_PATH}"
+print_success "Downloaded ${FILE_SIZE}"
 
-# ---------------------------------------------------------------------------
-# Mount & Install
-# ---------------------------------------------------------------------------
+# ─── Step 4: Mount & Install ────────────────────────────────────────────────
+print_step "Mounting disk image"
 
-log_info "Mounting disk image..."
-
-hdiutil attach "${DMG_PATH}" -nobrowse -quiet -mountpoint "${MOUNT_POINT}"
+(
+    hdiutil attach "${DMG_PATH}" -nobrowse -quiet -mountpoint "${MOUNT_POINT}" >/dev/null 2>&1
+) &
+SPIN_PID=$!
+spinner "$SPIN_PID" "Attaching DMG..."
+wait "$SPIN_PID"
 
 APP_BUNDLE=""
 for item in "${MOUNT_POINT}"/*.app; do
@@ -144,60 +256,56 @@ for item in "${MOUNT_POINT}"/*.app; do
 done
 
 if [[ -z "${APP_BUNDLE}" ]]; then
-    log_error "Could not find ${APP_NAME}.app inside the DMG."
+    print_error "Could not find CudoShare.app inside the DMG."
     exit 1
 fi
 
 APP_NAME_ONLY=$(basename "${APP_BUNDLE}")
 DEST_PATH="${INSTALL_DIR}/${APP_NAME_ONLY}"
 
-# Remove old version if exists
 if [[ -d "${DEST_PATH}" ]]; then
-    log_warn "Existing ${APP_NAME} found. Updating..."
+    print_warn "Replacing existing installation..."
     rm -rf "${DEST_PATH}"
 fi
 
-log_info "Copying ${APP_NAME_ONLY} to ${INSTALL_DIR}..."
-cp -a "${APP_BUNDLE}" "${DEST_PATH}"
-log_success "Installed to ${DEST_PATH}"
+print_step "Installing to Applications"
+(
+    cp -a "${APP_BUNDLE}" "${DEST_PATH}"
+) &
+SPIN_PID=$!
+spinner "$SPIN_PID" "Copying files..."
+wait "$SPIN_PID"
 
-# Detach DMG
-hdiutil detach "${MOUNT_POINT}" -quiet
-log_success "Unmounted disk image."
+touch "${DEST_PATH}"
 
-# ---------------------------------------------------------------------------
-# Post-install
-# ---------------------------------------------------------------------------
+# Detach
+(
+    hdiutil detach "${MOUNT_POINT}" -quiet >/dev/null 2>&1
+) &
+SPIN_PID=$!
+spinner "$SPIN_PID" "Cleaning up..."
+wait "$SPIN_PID"
 
-# Verify codesign / notarization (optional but nice)
+print_success "Installation complete"
+
+# ─── Step 5: Verification ───────────────────────────────────────────────────
 if command -v codesign &>/dev/null; then
     if codesign -vv "${DEST_PATH}" &>/dev/null; then
-        log_success "Application signature verified."
+        print_success "Code signature verified ${LOCK}"
     else
-        log_warn "Could not verify application signature. You may see a security warning on first launch."
-        log_warn "If so, go to System Settings > Privacy & Security and click 'Open Anyway'."
+        print_warn "First launch: approve in System Settings → Privacy & Security"
     fi
 fi
 
-log_info "Registering application..."
-# Touch to help Finder notice the new app
-touch "${DEST_PATH}"
-
-# ---------------------------------------------------------------------------
-# Done
-# ---------------------------------------------------------------------------
-
+# ─── Final Banner ───────────────────────────────────────────────────────────
 echo ""
-echo "=========================================="
-echo -e "     ${GREEN}Installation Complete!${NC}"
-echo "=========================================="
-echo ""
-echo "  📁 Location: ${DEST_PATH}"
-echo "  🚀 Launch:   open -a ${APP_NAME}"
-echo ""
-echo "  💡 First Launch Tip:"
-echo "     If you see 'CudoShare can't be opened', go to:"
-echo "     System Settings > Privacy & Security > Open Anyway"
-echo ""
-echo "  🎉 Welcome to CudoShare — Share without limits."
+draw_box_top 50
+draw_box_line "  ${BOLD}${BRIGHT_GREEN}Installation Complete!${RESET}                            " 50
+draw_box_line "                                                   " 50
+draw_box_line "  ${STAR}  CudoShare is ready to use                " 50
+draw_box_line "  ${FOLDER}  Location: ${DIM}/Applications/CudoShare.app${RESET}       " 50
+draw_box_line "  ${ROCKET}  Launch:   ${DIM}open -a CudoShare${RESET}                   " 50
+draw_box_line "                                                   " 50
+draw_box_line "  ${PARTY}  Welcome aboard — Share without limits  " 50
+draw_box_bottom 50
 echo ""

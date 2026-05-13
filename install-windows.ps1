@@ -15,9 +15,9 @@ param()
 
 $ErrorActionPreference = 'Stop'
 
-# ============================================================================
-# Configuration
-# ============================================================================
+# ═════════════════════════════════════════════════════════════════════════════
+#  Configuration
+# ═════════════════════════════════════════════════════════════════════════════
 
 $AppName      = 'CudoShare'
 $Repo         = 'CudoShare/cudoshare-releases'
@@ -26,43 +26,135 @@ $TempDir      = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "Cudo
 $MsiPath      = [System.IO.Path]::Combine($TempDir, 'CudoShare-windows.msi')
 $LogPath      = [System.IO.Path]::Combine($TempDir, 'install.log')
 
-# ============================================================================
-# Helpers
-# ============================================================================
+# ═════════════════════════════════════════════════════════════════════════════
+#  Colors & Styles
+# ═════════════════════════════════════════════════════════════════════════════
 
-function Write-Info    ($msg) { Write-Host "[INFO] $msg" -ForegroundColor Cyan }
-function Write-Success ($msg) { Write-Host "[OK]   $msg" -ForegroundColor Green }
-function Write-Warn    ($msg) { Write-Host "[WARN] $msg" -ForegroundColor Yellow }
-function Write-ErrorMsg($msg) { Write-Host "[ERR]  $msg" -ForegroundColor Red }
+$esc = [char]27
+$Reset       = "${esc}[0m"
+$Bold        = "${esc}[1m"
+$Dim         = "${esc}[2m"
+
+$Black       = "${esc}[30m"
+$Red         = "${esc}[31m"
+$Green       = "${esc}[32m"
+$Yellow      = "${esc}[33m"
+$Blue        = "${esc}[34m"
+$Magenta     = "${esc}[35m"
+$Cyan        = "${esc}[36m"
+$White       = "${esc}[37m"
+
+$BrightGreen = "${esc}[92m"
+$BrightCyan  = "${esc}[96m"
+$BrightYellow= "${esc}[93m"
+$BrightWhite = "${esc}[97m"
+
+# Box Drawing
+$HORIZ = '─'
+$VERT  = '│'
+$TL    = '╭'
+$TR    = '╮'
+$BL    = '╰'
+$BR    = '╯'
+$Arrow = '▸'
+$Check = '✓'
+$Cross = '✗'
+$Sparkle = '✦'
+
+# ═════════════════════════════════════════════════════════════════════════════
+#  Helpers
+# ═════════════════════════════════════════════════════════════════════════════
+
+function Clear-Terminal {
+    if ($Host.Name -match 'ConsoleHost') {
+        Clear-Host
+    }
+}
+
+function Write-Color {
+    param([string]$Text)
+    Write-Host "$Text$Reset" -NoNewline
+}
+
+function Print-Banner {
+    Clear-Terminal
+    Write-Color "`n  ${Cyan}${Bold}   ${TL}"
+    for ($i=0; $i -lt 42; $i++) { Write-Color $HORIZ }
+    Write-Color "${TR}${Reset}`n"
+
+    Write-Color "  ${Cyan}${Bold}   ${VERT}                                          ${VERT}${Reset}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}   ${BrightCyan}${Bold}╭━━━╮${Reset} ${Bold}╭━╮╭━╮╭━━━╮╭━━━╮${Reset}             ${Cyan}${Bold}${VERT}${Reset}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}   ${BrightCyan}${Bold}┃╭━╮┃${Reset} ${Bold}┃ ┃┃ ┃┃╭━╮┃┃╭━╮┃${Reset}             ${Cyan}${Bold}${VERT}${Reset}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}   ${BrightCyan}${Bold}┃┃ ╰╯${Reset} ${Bold}┃ ┃┃ ┃┃┃ ┃┃┃╰━╯┃${Reset}             ${Cyan}${Bold}${VERT}${Reset}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}   ${BrightCyan}${Bold}┃┃ ${Reset}    ${Bold}┃ ┃┃ ┃┃┃ ┃┃┃╭╮╭╯${Reset}             ${Cyan}${Bold}${VERT}${Reset}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}${RESET}   ${BrightCyan}${Bold}┃╰━╮┃${Reset} ${Bold}┃ ┗┛ ┃┃╰━╯┃┃┃┃╰╮${RESET}             ${Cyan}${Bold}${VERT}${Reset}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}${RESET}   ${BrightCyan}${Bold}╰━━━╯${RESET} ${Bold}╰━━━━╯╰━━━╯╰╯╰━╯${RESET}             ${Cyan}${Bold}${VERT}${RESET}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}                                          ${VERT}${Reset}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}    ${Dim}Lightning-fast file sharing${Reset}             ${Cyan}${Bold}${VERT}${Reset}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}                                          ${VERT}${Reset}`n"
+
+    Write-Color "  ${Cyan}${Bold}   ${BL}"
+    for ($i=0; $i -lt 42; $i++) { Write-Color $HORIZ }
+    Write-Color "${BR}${Reset}`n`n"
+}
+
+function Draw-BoxTop {
+    param([int]$Width = 50)
+    Write-Color "  ${Cyan}${Bold}${TL}"
+    for ($i=0; $i -lt $Width; $i++) { Write-Color $HORIZ }
+    Write-Color "${TR}${Reset}`n"
+}
+
+function Draw-BoxBottom {
+    param([int]$Width = 50)
+    Write-Color "  ${Cyan}${Bold}${BL}"
+    for ($i=0; $i -lt $Width; $i++) { Write-Color $HORIZ }
+    Write-Color "${BR}${Reset}`n"
+}
+
+function Draw-BoxLine {
+    param([string]$Text, [int]$Width = 50)
+    $pad = $Width - $Text.Length
+    Write-Color "  ${Cyan}${Bold}${VERT}${Reset} $Text"
+    for ($i=0; $i -lt $pad - 1; $i++) { Write-Color ' ' }
+    Write-Color "${Cyan}${Bold}${VERT}${Reset}`n"
+}
+
+function Show-Spinner {
+    param(
+        [scriptblock]$ScriptBlock,
+        [string]$Message = "Working..."
+    )
+    $spinChars = @('⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏')
+    $job = Start-Job -ScriptBlock $ScriptBlock
+    $i = 0
+    while ($job.State -eq 'Running') {
+        $i = ($i + 1) % 10
+        $char = $spinChars[$i]
+        Write-Color "`r  ${Cyan}${Bold}${char}${Reset} ${Dim}${Message}${Reset}  "
+        Start-Sleep -Milliseconds 80
+    }
+    $result = Receive-Job -Job $job -ErrorAction SilentlyContinue
+    Remove-Job -Job $job
+    Write-Color "`r$(' ' * 70)`r"
+    return $result
+}
+
+function Show-ProgressBar {
+    param([int]$Current, [int]$Total, [int]$Width = 40)
+    $pct = [math]::Floor($Current * 100 / $Total)
+    $filled = [math]::Floor($Current * $Width / $Total)
+    $empty = $Width - $filled
+    Write-Color "  ${Dim}[${Reset}"
+    for ($i=0; $i -lt $filled; $i++) { Write-Color "${BrightCyan}█${Reset}" }
+    for ($i=0; $i -lt $empty; $i++) { Write-Color "${Dim}░${Reset}" }
+    Write-Color "${Dim}]${Reset} ${Bold}${pct,3}%${Reset}"
+}
 
 function Test-IsAdmin {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = New-Object Security.Principal.WindowsPrincipal($identity)
     return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-}
-
-function Test-OSVersion {
-    $os = Get-CimInstance Win32_OperatingSystem
-    $caption = $os.Caption
-    $build = [System.Environment]::OSVersion.Version
-
-    # Windows 10 (1903 = build 18362) or Windows 11 (build 22000+)
-    $minBuild = 18362
-    $currentBuild = $os.BuildNumber
-
-    if ($currentBuild -lt $minBuild) {
-        Write-ErrorMsg "CudoShare requires Windows 10 version 1903 (build 18362) or later."
-        Write-ErrorMsg "Your build: $currentBuild"
-        exit 1
-    }
-
-    # 64-bit check
-    if (-not [Environment]::Is64BitOperatingSystem) {
-        Write-ErrorMsg "CudoShare requires a 64-bit version of Windows."
-        exit 1
-    }
-
-    Write-Success "$caption (Build $currentBuild) — supported."
 }
 
 function Invoke-Cleanup {
@@ -71,138 +163,157 @@ function Invoke-Cleanup {
     }
 }
 
-# ============================================================================
-# Main
-# ============================================================================
+# ═════════════════════════════════════════════════════════════════════════════
+#  Main
+# ═════════════════════════════════════════════════════════════════════════════
 
-Write-Host ""
-Write-Host "==========================================" -ForegroundColor Blue
-Write-Host "     CudoShare Installer for Windows" -ForegroundColor Blue
-Write-Host "==========================================" -ForegroundColor Blue
-Write-Host ""
+Print-Banner
 
-# Admin check (warn, don't fail — MSI can sometimes run as user)
+# ─── Step 1: System Check ───────────────────────────────────────────────────
+Write-Color "  ${BrightCyan}${Bold}${Arrow}${Reset} ${Bold}Checking your system${Reset}`n"
+
+$os = Get-CimInstance Win32_OperatingSystem
+$build = [int]$os.BuildNumber
+$minBuild = 18362
+
+if ($build -lt $minBuild) {
+    Write-Color "  ${Red}${Bold}${Cross}${RESET} Windows 10 v1903+ required. Build: $build`n"
+    exit 1
+}
+
+if (-not [Environment]::Is64BitOperatingSystem) {
+    Write-Color "  ${Red}${Bold}${Cross}${RESET} 64-bit Windows required`n"
+    exit 1
+}
+
+$arch = if ([Environment]::Is64BitOperatingSystem) { "x64" } else { "x86" }
+Write-Color "  ${BrightGreen}${Bold}${Check}${RESET} Windows $($os.Caption) · Build $build · $arch`n"
+
+# ─── Admin Warning ──────────────────────────────────────────────────────────
 if (-not (Test-IsAdmin)) {
-    Write-Warn "This script is not running as Administrator."
-    Write-Warn "Installation may fail if you lack permissions. If it fails, please re-run as Admin:"
-    Write-Warn "  Right-click PowerShell -> 'Run as Administrator', then run the install command again."
-    Write-Host ""
-    $continue = Read-Host "Press [Enter] to continue anyway, or Ctrl+C to cancel"
+    Write-Color "  ${BrightYellow}${Bold}!${RESET} Not running as Administrator`n"
+    Write-Color "  ${Dim}Some systems require admin rights for MSI installation.${RESET}`n"
+    Write-Color "  ${Dim}If this fails, re-run PowerShell as Admin and try again.${RESET}`n`n"
 }
 
-# OS checks
-Write-Info "Checking system requirements..."
-Test-OSVersion
-
-# Network check
-Write-Info "Checking internet connectivity..."
-if (-not (Test-Connection -ComputerName github.com -Count 1 -Quiet -ErrorAction SilentlyContinue)) {
-    Write-Warn "Cannot reach github.com. Proceeding anyway..."
+# ─── Check running ──────────────────────────────────────────────────────────
+$proc = Get-Process -Name $AppName -ErrorAction SilentlyContinue
+if ($proc) {
+    Write-Color "  ${BrightYellow}${Bold}!${RESET} CudoShare is currently running${RESET}`n"
+    Write-Color "  ${Dim}Please close it first, or press Enter to continue anyway.${RESET}`n"
+    $null = Read-Host
 }
 
-# Check if running
-$process = Get-Process -Name $AppName -ErrorAction SilentlyContinue
-if ($process) {
-    Write-Warn "CudoShare is currently running."
-    Write-Warn "Please close CudoShare before installing to avoid file-in-use errors."
-    $null = Read-Host "Press [Enter] to continue anyway, or Ctrl+C to cancel"
-}
+# ─── Step 2: Download ───────────────────────────────────────────────────────
+Write-Color "`n  ${BrightCyan}${Bold}${Arrow}${RESET} ${Bold}Downloading CudoShare${RESET}`n"
 
-# Create temp dir
 New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
 
-# Download
-Write-Info "Downloading latest CudoShare for Windows..."
-Write-Info "URL: $DownloadUrl"
+$ProgressPreference = 'SilentlyContinue'
 
+# Try to get file size for progress bar
+$size = 0
 try {
-    $ProgressPreference = 'SilentlyContinue'
-    Invoke-WebRequest -Uri $DownloadUrl -OutFile $MsiPath -UseBasicParsing -TimeoutSec 120
-    $ProgressPreference = 'Continue'
+    $response = Invoke-WebRequest -Uri $DownloadUrl -Method Head -UseBasicParsing -TimeoutSec 10 -ErrorAction SilentlyContinue
+    $sizeStr = $response.Headers['Content-Length']
+    if ($sizeStr) { $size = [long]$sizeStr }
 }
-catch {
-    Write-ErrorMsg "Download failed: $($_.Exception.Message)"
-    Write-ErrorMsg "Please check your internet connection or try downloading manually from:"
-    Write-ErrorMsg "  https://github.com/$Repo/releases/latest"
+catch { $size = 0 }
+
+if ($size -gt 0) {
+    # Progress bar download
+    $wc = New-Object System.Net.WebClient
+    $done = $false
+    $wc.DownloadFileAsync((New-Object System.Uri($DownloadUrl)), $MsiPath)
+
+    while (-not $done) {
+        if (Test-Path $MsiPath) {
+            $current = (Get-Item $MsiPath).Length
+            if ($current -ge $size) { $done = $true }
+            Show-ProgressBar $current $size
+        }
+        Start-Sleep -Milliseconds 200
+        if (-not $wc.IsBusy) { $done = $true }
+    }
+    Write-Color "`n"
+    $wc.Dispose()
+}
+else {
+    # Spinner download (unknown size)
+    Show-Spinner -Message "Downloading CudoShare-windows.msi..." -ScriptBlock {
+        param($url, $path)
+        $wc = New-Object System.Net.WebClient
+        $wc.DownloadFile($url, $path)
+        $wc.Dispose()
+    } -ArgumentList $DownloadUrl, $MsiPath | Out-Null
+}
+
+$ProgressPreference = 'Continue'
+
+if (-not (Test-Path $MsiPath) -or (Get-Item $MsiPath).Length -lt 1MB) {
+    Write-Color "  ${Red}${Bold}${Cross}${RESET} Download failed. Check your connection.`n"
     Invoke-Cleanup
     exit 1
 }
 
-$fileSize = (Get-Item $MsiPath).Length
-if ($fileSize -lt 1MB) {
-    Write-ErrorMsg "Downloaded file seems too small ($([math]::Round($fileSize/1KB, 2)) KB)."
-    Write-ErrorMsg "The release may not exist yet, or the download was interrupted."
-    Invoke-Cleanup
-    exit 1
-}
+$fileSizeMB = [math]::Round((Get-Item $MsiPath).Length / 1MB, 1)
+Write-Color "  ${BrightGreen}${Bold}${Check}${RESET} Downloaded ${fileSizeMB} MB`n"
 
-Write-Success "Downloaded $([math]::Round($fileSize/1MB, 2)) MB to $MsiPath"
+# ─── Step 3: Install ────────────────────────────────────────────────────────
+Write-Color "`n  ${BrightCyan}${Bold}${Arrow}${RESET} ${Bold}Installing CudoShare${RESET}`n"
 
-# Install
-Write-Info "Installing CudoShare..."
-Write-Info "This may take a moment. Please wait..."
+$msiArgs = @('/i', "`"$MsiPath`"", '/qn', '/norestart', "/l*v `"$LogPath`"")
 
-$msiArgs = @(
-    '/i'
-    "`"$MsiPath`""
-    '/qn'
-    '/norestart'
-    "/l*v `"$LogPath`""
-)
+$exitCode = Show-Spinner -Message "Installing... This may take a moment" -ScriptBlock {
+    param($argsList)
+    $p = Start-Process -FilePath 'msiexec.exe' -ArgumentList $argsList -Wait -PassThru -NoNewWindow
+    return $p.ExitCode
+} -ArgumentList (,$msiArgs)
 
-$proc = Start-Process -FilePath 'msiexec.exe' -ArgumentList $msiArgs -Wait -PassThru -NoNewWindow
-
-if ($proc.ExitCode -ne 0) {
-    Write-ErrorMsg "Installation failed with exit code $($proc.ExitCode)."
+if ($exitCode -ne 0) {
+    Write-Color "  ${Red}${Bold}${Cross}${RESET} Installation failed (exit code: $exitCode)`n"
     if (Test-Path $LogPath) {
-        Write-ErrorMsg "Install log saved to: $LogPath"
-        Write-ErrorMsg "Last 10 lines of log:"
-        Get-Content $LogPath -Tail 10 | ForEach-Object { Write-ErrorMsg "  $_" }
+        Write-Color "  ${Dim}Log saved to: $LogPath${RESET}`n"
+        Get-Content $LogPath -Tail 5 | ForEach-Object {
+            Write-Color "  ${Dim}  $_${RESET}`n"
+        }
     }
     Invoke-Cleanup
     exit 1
 }
 
-Write-Success "Installation completed successfully."
+Write-Color "  ${BrightGreen}${Bold}${Check}${RESET} Installation complete`n"
 
-# Verify installation
+# ─── Step 4: Verify ─────────────────────────────────────────────────────────
 $installDirs = @(
     "${env:ProgramFiles}\$AppName",
     "${env:ProgramFiles(x86)}\$AppName",
     "${env:LocalAppData}\Programs\$AppName"
 )
 
-$found = $false
+$foundDir = $null
 foreach ($dir in $installDirs) {
     if (Test-Path $dir) {
-        Write-Success "Found installation at: $dir"
-        $found = $true
+        $foundDir = $dir
         break
     }
 }
 
-if (-not $found) {
-    Write-Warn "Could not automatically locate installation directory."
-    Write-Warn "CudoShare should be available in your Start Menu."
+if ($foundDir) {
+    Write-Color "  ${BrightGreen}${Bold}${Check}${RESET} Found at: ${Dim}$foundDir${RESET}`n"
 }
 
-# Cleanup
 Invoke-Cleanup
 
-# ============================================================================
-# Done
-# ============================================================================
-
-Write-Host ""
-Write-Host "==========================================" -ForegroundColor Green
-Write-Host "     Installation Complete!" -ForegroundColor Green
-Write-Host "==========================================" -ForegroundColor Green
-Write-Host ""
-Write-Host "  🚀 Launch:    Press Win key, type 'CudoShare', and press Enter"
-Write-Host "  🖥️  Start Menu: Look for 'CudoShare' under All Apps"
-Write-Host ""
-Write-Host "  💡 First Launch Tip:"
-Write-Host "     Windows SmartScreen may show a warning. Click 'More info' then 'Run anyway'."
-Write-Host ""
-Write-Host "  🎉 Welcome to CudoShare — Share without limits."
-Write-Host ""
+# ─── Final Banner ───────────────────────────────────────────────────────────
+Write-Color "`n"
+Draw-BoxTop 52
+Draw-BoxLine "  ${Bold}${BrightGreen}Installation Complete!${Reset}                              " 52
+Draw-BoxLine "                                                      " 52
+Draw-BoxLine "  ⭐  CudoShare is ready to use                        " 52
+Draw-BoxLine "  📁  Start Menu: Search for ${Bold}CudoShare${Reset}                " 52
+Draw-BoxLine "  🚀  Desktop shortcut created                         " 52
+Draw-BoxLine "                                                      " 52
+Draw-BoxLine "  🎉  Welcome aboard — Share without limits           " 52
+Draw-BoxBottom 52
+Write-Color "`n"
