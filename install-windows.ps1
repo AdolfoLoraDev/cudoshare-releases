@@ -27,7 +27,7 @@ $MsiPath      = [System.IO.Path]::Combine($TempDir, 'CudoShare-windows.msi')
 $LogPath      = [System.IO.Path]::Combine($TempDir, 'install.log')
 
 # ═════════════════════════════════════════════════════════════════════════════
-#  Colors & Styles
+#  Colors & Styles (ANSI)
 # ═════════════════════════════════════════════════════════════════════════════
 
 $esc = [char]27
@@ -59,7 +59,6 @@ $BR    = '╯'
 $Arrow = '▸'
 $Check = '✓'
 $Cross = '✗'
-$Sparkle = '✦'
 
 # ═════════════════════════════════════════════════════════════════════════════
 #  Helpers
@@ -78,20 +77,17 @@ function Write-Color {
 
 function Print-Banner {
     Clear-Terminal
-    Write-Color "`n  ${Cyan}${Bold}   ${TL}"
+    Write-Color "`n"
+    Write-Color "  ${Cyan}${Bold}   ${TL}"
     for ($i=0; $i -lt 42; $i++) { Write-Color $HORIZ }
     Write-Color "${TR}${Reset}`n"
 
     Write-Color "  ${Cyan}${Bold}   ${VERT}                                          ${VERT}${Reset}`n"
-    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}   ${BrightCyan}${Bold}╭━━━╮${Reset} ${Bold}╭━╮╭━╮╭━━━╮╭━━━╮${Reset}             ${Cyan}${Bold}${VERT}${Reset}`n"
-    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}   ${BrightCyan}${Bold}┃╭━╮┃${Reset} ${Bold}┃ ┃┃ ┃┃╭━╮┃┃╭━╮┃${Reset}             ${Cyan}${Bold}${VERT}${Reset}`n"
-    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}   ${BrightCyan}${Bold}┃┃ ╰╯${Reset} ${Bold}┃ ┃┃ ┃┃┃ ┃┃┃╰━╯┃${Reset}             ${Cyan}${Bold}${VERT}${Reset}`n"
-    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}   ${BrightCyan}${Bold}┃┃ ${Reset}    ${Bold}┃ ┃┃ ┃┃┃ ┃┃┃╭╮╭╯${Reset}             ${Cyan}${Bold}${VERT}${Reset}`n"
-    Write-Color "  ${Cyan}${Bold}   ${VERT}${RESET}   ${BrightCyan}${Bold}┃╰━╮┃${Reset} ${Bold}┃ ┗┛ ┃┃╰━╯┃┃┃┃╰╮${RESET}             ${Cyan}${Bold}${VERT}${Reset}`n"
-    Write-Color "  ${Cyan}${Bold}   ${VERT}${RESET}   ${BrightCyan}${Bold}╰━━━╯${RESET} ${Bold}╰━━━━╯╰━━━╯╰╯╰━╯${RESET}             ${Cyan}${Bold}${VERT}${RESET}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}     ${Bold}${BrightWhite}  ⚡  C U D O S H A R E${Reset}              ${Cyan}${Bold}${VERT}${Reset}`n"
     Write-Color "  ${Cyan}${Bold}   ${VERT}                                          ${VERT}${Reset}`n"
-    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}    ${Dim}Lightning-fast file sharing${Reset}             ${Cyan}${Bold}${VERT}${Reset}`n"
-    Write-Color "  ${Cyan}${Bold}   ${VERT}                                          ${VERT}${Reset}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}${Reset}       ${Dim}Lightning-fast file sharing${Reset}      ${Cyan}${Bold}${VERT}${RESET}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}${RESET}          ${Dim}Direct · Secure · Private${RESET}       ${Cyan}${Bold}${VERT}${RESET}`n"
+    Write-Color "  ${Cyan}${Bold}   ${VERT}                                          ${VERT}${RESET}`n"
 
     Write-Color "  ${Cyan}${Bold}   ${BL}"
     for ($i=0; $i -lt 42; $i++) { Write-Color $HORIZ }
@@ -170,7 +166,7 @@ function Invoke-Cleanup {
 Print-Banner
 
 # ─── Step 1: System Check ───────────────────────────────────────────────────
-Write-Color "  ${BrightCyan}${Bold}${Arrow}${Reset} ${Bold}Checking your system${Reset}`n"
+Write-Color "  ${BrightCyan}${Bold}${Arrow}${Reset} ${Bold}Checking your system${RESET}`n"
 
 $os = Get-CimInstance Win32_OperatingSystem
 $build = [int]$os.BuildNumber
@@ -211,7 +207,6 @@ New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
 
 $ProgressPreference = 'SilentlyContinue'
 
-# Try to get file size for progress bar
 $size = 0
 try {
     $response = Invoke-WebRequest -Uri $DownloadUrl -Method Head -UseBasicParsing -TimeoutSec 10 -ErrorAction SilentlyContinue
@@ -221,7 +216,6 @@ try {
 catch { $size = 0 }
 
 if ($size -gt 0) {
-    # Progress bar download
     $wc = New-Object System.Net.WebClient
     $done = $false
     $wc.DownloadFileAsync((New-Object System.Uri($DownloadUrl)), $MsiPath)
@@ -239,7 +233,6 @@ if ($size -gt 0) {
     $wc.Dispose()
 }
 else {
-    # Spinner download (unknown size)
     Show-Spinner -Message "Downloading CudoShare-windows.msi..." -ScriptBlock {
         param($url, $path)
         $wc = New-Object System.Net.WebClient
@@ -309,11 +302,11 @@ Invoke-Cleanup
 Write-Color "`n"
 Draw-BoxTop 52
 Draw-BoxLine "  ${Bold}${BrightGreen}Installation Complete!${Reset}                              " 52
-Draw-BoxLine "                                                      " 52
-Draw-BoxLine "  ⭐  CudoShare is ready to use                        " 52
-Draw-BoxLine "  📁  Start Menu: Search for ${Bold}CudoShare${Reset}                " 52
-Draw-BoxLine "  🚀  Desktop shortcut created                         " 52
-Draw-BoxLine "                                                      " 52
-Draw-BoxLine "  🎉  Welcome aboard — Share without limits           " 52
+Draw-BoxLine "                                                        " 52
+Draw-BoxLine "  ⭐  CudoShare is ready to use                          " 52
+Draw-BoxLine "  📁  Start Menu: Search for ${Bold}CudoShare${Reset}                  " 52
+Draw-BoxLine "  🚀  Desktop shortcut created                           " 52
+Draw-BoxLine "                                                        " 52
+Draw-BoxLine "  🎉  Welcome aboard — Share without limits             " 52
 Draw-BoxBottom 52
 Write-Color "`n"
