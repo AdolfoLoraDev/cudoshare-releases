@@ -256,13 +256,13 @@ Copia y pega uno de los comandos de abajo en tu terminal. Eso es todo.
 ### macOS
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-mac.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AdolfoLoraDev/cudoshare-releases/main/install-mac.sh | bash
 ```
 
 ### Windows (PowerShell — Admin)
 
 ```powershell
-irm https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-windows.ps1 | iex
+irm https://raw.githubusercontent.com/AdolfoLoraDev/cudoshare-releases/main/install-windows.ps1 | iex
 ```
 
 > **💡 Consejo Pro:** Cierra y vuelve a abrir tu terminal después de la instalación, o ejecuta `cudoshare --version` para verificar.
