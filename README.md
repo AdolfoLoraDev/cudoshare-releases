@@ -50,13 +50,13 @@ Copy and paste one of the commands below into your terminal. That's it.
 ### macOS
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-mac.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AdolfoLoraDev/cudoshare-releases/main/install-mac.sh | bash
 ```
 
 ### Windows (PowerShell — Admin)
 
 ```powershell
-irm https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-windows.ps1 | iex
+irm https://raw.githubusercontent.com/AdolfoLoraDev/cudoshare-releases/main/install-windows.ps1 | iex
 ```
 
 > **💡 Pro Tip:** Close and reopen your terminal after installation, or run `cudoshare --version` to verify.
@@ -69,12 +69,12 @@ irm https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-
 
 **macOS — Terminal:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-mac.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AdolfoLoraDev/cudoshare-releases/main/install-mac.sh | bash
 ```
 
 **Windows — PowerShell (Run as Administrator):**
 ```powershell
-irm https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-windows.ps1 | iex
+irm https://raw.githubusercontent.com/AdolfoLoraDev/cudoshare-releases/main/install-windows.ps1 | iex
 ```
 
 These scripts will:
@@ -275,12 +275,12 @@ irm https://raw.githubusercontent.com/AdolfoLoraDev/cudoshare-releases/main/inst
 
 **macOS — Terminal:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-mac.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AdolfoLoraDev/cudoshare-releases/main/install-mac.sh | bash
 ```
 
 **Windows — PowerShell (Ejecutar como Administrador):**
 ```powershell
-irm https://raw.githubusercontent.com/CudoShare/cudoshare-releases/main/install-windows.ps1 | iex
+irm https://raw.githubusercontent.com/AdolfoLoraDev/cudoshare-releases/main/install-windows.ps1 | iex
 ```
 
 Estos scripts:

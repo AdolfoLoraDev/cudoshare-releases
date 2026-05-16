@@ -119,10 +119,11 @@ function Draw-BoxLine {
 function Show-Spinner {
     param(
         [scriptblock]$ScriptBlock,
-        [string]$Message = "Working..."
+        [string]$Message = "Working...",
+        [object[]]$ArgumentList = @()
     )
     $spinChars = @('⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏')
-    $job = Start-Job -ScriptBlock $ScriptBlock
+    $job = Start-Job -ScriptBlock $ScriptBlock -ArgumentList $ArgumentList
     $i = 0
     while ($job.State -eq 'Running') {
         $i = ($i + 1) % 10
@@ -131,8 +132,12 @@ function Show-Spinner {
         Start-Sleep -Milliseconds 80
     }
     $result = Receive-Job -Job $job -ErrorAction SilentlyContinue
+    $jobState = $job.State
     Remove-Job -Job $job
     Write-Color "`r$(' ' * 70)`r"
+    if ($jobState -eq 'Failed') {
+        throw "Background job failed. Re-run with -Verbose for details."
+    }
     return $result
 }
 
